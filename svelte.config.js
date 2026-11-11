@@ -12,6 +12,7 @@ export default {
   kit: {
     adapter: adapter({ pages: 'build', assets: 'build', strict: false }),
     alias: { '#lib': 'src/lib' },
+    inlineStyleThreshold: Infinity,
     prerender: { entries: ['*'], handleHttpError: 'warn' },
   },
 };
