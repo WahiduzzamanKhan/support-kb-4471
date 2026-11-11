@@ -1,0 +1,5 @@
+{
+  "parser": { "url": "https://github.com/WahiduzzamanKhan/support-kb-4471/issues/1", "state": "fixed", "by": "fix(dates): parse dd/mm for eu locales" },
+  "hint": { "url": "https://github.com/WahiduzzamanKhan/support-kb-4471/issues/2", "state": "won't fix", "by": "booking-v3 form retired" },
+  "one-day": { "url": "https://github.com/WahiduzzamanKhan/support-kb-4471/issues/3", "state": "open", "by": null }
+}

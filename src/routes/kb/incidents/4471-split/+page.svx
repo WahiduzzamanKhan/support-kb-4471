@@ -11,51 +11,51 @@ signature: Wahiduzzaman Khan
   import ProblemTable from '#lib/kb/ProblemTable.svelte';
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
-
-  const issues = 'https://github.com/WahiduzzamanKhan/support-kb-4471/issues';
-  const tickets = { parser: `${issues}/1`, hint: `${issues}/2`, 'one-day': `${issues}/3` };
 </script>
 
-[#4471](/kb/incidents/4471) says one issue, one fix queued. Its reports say otherwise. They were
+[#4471](/kb/incidents/4471) said one issue, one fix queued. Its reports say otherwise. They were
 merged by subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject)), and a subject
-like "Wrong day on the invite" fits three different bugs. Each now has its own ticket.
+like "Wrong day on the invite" fits three different bugs. Each has its own ticket.
 
 <Callout kind="warn">
-The queued parser fix closes only the first row. The other two stay broken after it ships.
+#4471 closed on 05 Oct: the parser is fixed and booking-v3 is retired. The one-day shift is
+neither, and it is still open.
 </Callout>
 
 ## The problems
 
-<ProblemTable ticket={4471} {tickets} />
+<ProblemTable ticket={4471} />
 
 Counts come from the ticket export at render time and match the desk's own cause table on
 [#4471](/kb/incidents/4471): one report per id, sorted by the tenant's locale and booking form
-(`causes.ts`), not by the intake tag, which only guesses from the reporter's browser.
+(`causes.ts`), not by the intake tag, which only guesses from the reporter's browser. Ticket
+states come from `tickets-4471-split.json`.
 
 ### `parser`: the shared parser reads dates month first
 
 Day-first tenants write `03/05` for 3 May; the parser reads 5 March. Day and month swap. This is
-what #4471 describes, and the queued fix is for this.
+what #4471 described. Fixed by `fix(dates): parse dd/mm for eu locales`.
 
 ### `hint`: booking-v3 tells people to type the month first
 
-booking-v3 prints `MM/DD/YYYY` under its date field. A day-first tenant's people type what the
-hint says, and the form reads it the tenant's way, day first. Same symptom, different code: the
-parser fix does not touch it. Only form reports from booking-v3 tenants land here. #4471's own
-table already showed this row as "not this ticket — no ticket of its own".
+booking-v3 printed `MM/DD/YYYY` under its date field. A day-first tenant's people typed what the
+hint said, and the form read it the tenant's way, day first. Same symptom, different code: the
+parser fix does not touch it. Only form reports from booking-v3 tenants land here. Won't fix:
+the booking-v3 form is retired, and its hint with it.
 
 ### `one-day`: dates move by one day
 
 No swap: Tuesday 12 May shows as Monday 11 May, a client in Lisbon gets Tuesday and one in
 Toronto gets Monday, an invite arrives before the booking was made. That is a time-zone shift,
 not a date order. The desk had already read these as a one-day move (`desk-notes.json`); it
-still counts them under `parser`, where they are filed, so they appear in both rows.
+still counts them under `parser`, where they are filed, so they appear in both rows. The parser
+fix does not change a time zone: this ticket stays open.
 
 ## For the desk
 
 - Before you merge a report into a ticket, check its cause, not only its subject: the explorer
   on [triage](/kb/triage/dedupe) shows how.
 - A report about a one-day move does not belong with a day/month swap.
-- When the parser fix ships, keep the `hint` and `one-day` tickets open.
+- A new one-day report after 05 Oct goes on the `one-day` ticket, not on #4471.
 
 <RenderStamp {signature} />
