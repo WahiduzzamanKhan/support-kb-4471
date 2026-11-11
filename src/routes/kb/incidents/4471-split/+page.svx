@@ -28,9 +28,9 @@ The queued parser fix closes only the first row. The other two stay broken after
 
 <ProblemTable ticket={4471} {tickets} />
 
-Counts come from the ticket export at render time: one report per id, sorted by the tenant's
-locale and booking form (`causes.ts`), not by the intake tag, which only guesses from the
-reporter's browser.
+Counts come from the ticket export at render time and match the desk's own cause table on
+[#4471](/kb/incidents/4471): one report per id, sorted by the tenant's locale and booking form
+(`causes.ts`), not by the intake tag, which only guesses from the reporter's browser.
 
 ### `parser`: the shared parser reads dates month first
 
@@ -48,8 +48,8 @@ table already showed this row as "not this ticket — no ticket of its own".
 
 No swap: Tuesday 12 May shows as Monday 11 May, a client in Lisbon gets Tuesday and one in
 Toronto gets Monday, an invite arrives before the booking was made. That is a time-zone shift,
-not a date order. The desk had already read these as a one-day move (`desk-notes.json`) but
-counted them under `parser`.
+not a date order. The desk had already read these as a one-day move (`desk-notes.json`); it
+still counts them under `parser`, where they are filed, so they appear in both rows.
 
 ## For the desk
 

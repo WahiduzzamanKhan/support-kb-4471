@@ -28,7 +28,7 @@
       {@const url = ticketOf(g.problem)}
       <tr class:open={!url}>
         <td><code>{g.problem}</code></td>
-        <td>{g.reports.length}</td>
+        <td>{g.reports.length}{#if g.alsoIn}<sup>*</sup>{/if}</td>
         <td class="tenants">{g.tenants.join(', ')}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
         <td>{#if url}<a href={url}>{label(url)}</a>{:else}no ticket yet{/if}</td>
@@ -37,9 +37,16 @@
   </tbody>
 </table>
 
+{#each split.groups as g (g.problem)}
+  {#if g.alsoIn}
+    <p class="note">* {g.reports.length} {g.problem} reports are also counted under <code>{g.alsoIn}</code>, where the desk files them by tenant.</p>
+  {/if}
+{/each}
+
 <style>
   .sum { font-size: 1.1rem; }
   .tenants { color: var(--muted); font-size: 0.85em; }
+  .note { color: var(--muted); font-size: 0.85em; }
   .open td { background: var(--warn-bg); }
   .open td:last-child { color: var(--warn); font-weight: 600; }
 </style>
